@@ -25,6 +25,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const userCollection = client.db("bistroDB").collection("users");
     const menuCollection = client.db("bistroDB").collection("menu");
     const reviewCollection = client.db("bistroDB").collection("reviews");
     const cartCollection = client.db("bistroDB").collection("carts");
@@ -60,6 +61,12 @@ async function run() {
         const id = req.params.id;
         const query = { _id: new ObjectId(id) }
         const result = await cartCollection.deleteOne(query);
+        res.send(result);
+      });
+
+      app.post('/users', async (req, res) => {
+        const user = req.body;
+        const result = await userCollection.insertOne(user);
         res.send(result);
       });
 
